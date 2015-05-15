@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Syncthing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="images/favicon.png" type="image/png">
+
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/favicons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/favicons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/favicons/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="images/favicons/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/favicons/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="images/favicons/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="images/favicons/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="images/favicons/favicon-16x16.png" sizes="16x16" />
+    <meta name="application-name" content="Syncthing" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="images/favicons/mstile-144x144.png" />
+    <meta name="theme-color" content="#FFFFFF">
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/raleway.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+
+<body>
+    <div id="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h1><img alt="Syncthing" id="syncthing-logo" title="Syncthing" src="images/logo-horizontal.svg" width="600"/></h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h1>Debian/Ubuntu Packages</h1>
+
+                    <h2>Release Builds</h2>
+                    <p>The <code>release</code> channel is updated with full release builds, approximately once a week. This is what most people will want to run.</p>
+                    <pre># Add the release PGP keys:
+curl -s https://syncthing.net/release-key.txt | apt-key add -
+
+# Add the "release" channel to your APT sources:
+echo "deb http://apt.syncthing.net/ syncthing release" >> /etc/apt/sources.list
+
+# Update and install syncthing:
+apt-get update
+apt-get install syncthing</pre>
+
+                    <h2>Development Builds</h2>
+                    <p>The <code>devel</code> channel contains the latest development build. This is bleeding edge stuff, not guaranteed to work.</p>
+                    <pre># As above, except use the "devel" channel instead of "release":
+echo "deb http://apt.syncthing.net/ syncthing devel" >> /etc/apt/sources.list</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
