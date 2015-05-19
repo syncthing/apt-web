@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8" />
     <title>Syncthing</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="shortcut icon" href="images/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/png" />
 
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/favicons/apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/favicons/apple-touch-icon-72x72.png" />
@@ -14,14 +15,13 @@
     <link rel="apple-touch-icon-precomposed" sizes="152x152" href="images/favicons/apple-touch-icon-152x152.png" />
     <link rel="icon" type="image/png" href="images/favicons/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="images/favicons/favicon-16x16.png" sizes="16x16" />
-    <meta name="application-name" content="Syncthing" />
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta name="msapplication-TileImage" content="images/favicons/mstile-144x144.png" />
-    <meta name="theme-color" content="#FFFFFF">
+    <meta name="theme-color" content="#FFFFFF" />
 
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/raleway.css">
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/raleway.css" />
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
@@ -39,19 +39,19 @@
                     <h2>Release Builds</h2>
                     <p>The <code>release</code> channel is updated with full release builds, approximately once a week. This is what most people will want to run.</p>
                     <pre># Add the release PGP keys:
-curl -s https://syncthing.net/release-key.txt | apt-key add -
+<kbd>curl -s https://syncthing.net/release-key.txt | apt-key add -</kbd>
 
 # Add the "release" channel to your APT sources:
-echo "deb http://apt.syncthing.net/ syncthing release" >> /etc/apt/sources.list
+<kbd>echo "deb http://apt.syncthing.net/ syncthing release" >> /etc/apt/sources.list.d/syncthing.list</kbd>
 
 # Update and install syncthing:
-apt-get update
-apt-get install syncthing</pre>
+<kbd>apt-get update</kbd>
+<kbd>apt-get install syncthing</kbd></pre>
 
                     <h2>Development Builds</h2>
                     <p>The <code>devel</code> channel contains the latest development build. This is bleeding edge stuff, not guaranteed to work.</p>
                     <pre># As above, except use the "devel" channel instead of "release":
-echo "deb http://apt.syncthing.net/ syncthing devel" >> /etc/apt/sources.list</pre>
+<kbd>echo "deb http://apt.syncthing.net/ syncthing devel" >> /etc/apt/sources.list.d/syncthing.list</kbd></pre>
                 </div>
             </div>
         </div>
