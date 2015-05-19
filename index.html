@@ -28,12 +28,12 @@
     <div id="main">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-10-md-offset-1">
                     <h1><img alt="Syncthing" id="syncthing-logo" title="Syncthing" src="images/logo-horizontal.svg" width="600"/></h1>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-10 col-md-offset-1">
                     <h1>Debian/Ubuntu Packages</h1>
 
                     <h2>Release Builds</h2>
@@ -42,8 +42,7 @@
 <kbd>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</kbd>
 
 # Add the "release" channel to your APT sources:
-<kbd>echo "deb http://apt.syncthing.net/ syncthing release" > /tmp/syncthing-release.list</kbd>
-<kbd>sudo cp /tmp/syncthing-release.list /etc/apt/sources.list.d/</kbd>
+<kbd>sudo sh -c 'echo deb http://apt.syncthing.net/ syncthing release > /etc/apt/sources.list.d/syncthing-release.list'</kbd>
 
 # Update and install syncthing:
 <kbd>sudo apt-get update</kbd>
@@ -52,8 +51,7 @@
                     <h2>Development Builds</h2>
                     <p>The <code>devel</code> channel contains the latest development build. This is bleeding edge stuff, not guaranteed to work.</p>
                     <pre># As above, except use the "devel" channel instead of "release":
-<kbd>echo "deb http://apt.syncthing.net/ syncthing devel" > /tmp/syncthing-devel.list</kbd>
-<kbd>sudo cp /tmp/syncthing-devel.list /etc/apt/sources.list.d/</kbd>
+<kbd>sudo sh -c 'echo deb http://apt.syncthing.net/ syncthing devel > /etc/apt/sources.list.d/syncthing-devel.list'</kbd>
                 </div>
             </div>
         </div>
