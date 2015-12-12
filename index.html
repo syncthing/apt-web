@@ -42,7 +42,7 @@
 <kbd>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</kbd>
 
 # Add the "release" channel to your APT sources:
-<kbd>echo deb http://apt.syncthing.net/ syncthing release | sudo tee /etc/apt/sources.list.d/syncthing-release.list</kbd>
+<kbd>echo deb https://apt.syncthing.net/ syncthing release | sudo tee /etc/apt/sources.list.d/syncthing-release.list</kbd>
 
 # Update and install syncthing:
 <kbd>sudo apt-get update</kbd>
@@ -51,7 +51,7 @@
                     <h2>Development Builds</h2>
                     <p>The <code>devel</code> channel contains the latest development build. This is bleeding edge stuff, not guaranteed to work.</p>
                     <pre># As above, except use the "devel" channel instead of "release":
-<kbd>echo deb http://apt.syncthing.net/ syncthing devel | sudo tee /etc/apt/sources.list.d/syncthing-release.list</kbd>
+<kbd>echo deb https://apt.syncthing.net/ syncthing devel | sudo tee /etc/apt/sources.list.d/syncthing-release.list</kbd>
                 </div>
             </div>
         </div>
