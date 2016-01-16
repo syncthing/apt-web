@@ -39,7 +39,7 @@
                     <p>Architectures: amd64, i386, arm, armhf (like the Raspberry Pi 2!) – see the <a href="https://syncthing.net/">main site</a> for source downloads</p>
                     <p>The <code>release</code> channel is updated with full release builds, approximately once a week. This is what most people will want to run.</p>
                     <pre># Add the release PGP keys:
-<kbd>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</kbd>
+<kbd>wget -q https://syncthing.net/release-key.txt -O- | sudo apt-key add -</kbd>
 
 # Add the "release" channel to your APT sources:
 <kbd>echo deb http://apt.syncthing.net/ syncthing release | sudo tee /etc/apt/sources.list.d/syncthing-release.list</kbd>
