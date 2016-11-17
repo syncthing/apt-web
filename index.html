@@ -36,17 +36,29 @@
                 <div class="col-md-12">
                     <h1>Debian/Ubuntu Packages</h1>
 
-                    <p>The <code>release</code> channel is updated with full release builds, approximately once a week.</p>
+                    <p>The <code>release</code> channel is updated with full release builds, approximately once every two weeks.</p>
                     <pre># Add the release PGP keys:
 <b>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</b>
 
 # Add the "release" channel to your APT sources:
-<b>echo "deb http://apt.syncthing.net/ syncthing release" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
+<b>echo "deb https://apt.syncthing.net/ syncthing release" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
 
 # Update and install syncthing:
 <b>sudo apt-get update
 sudo apt-get install syncthing</b></pre>
 
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-md-12">
+                    <p>Depending on your distribution, you may see an error similar to the following when running <code>apt-get</code>:</p>
+                    <pre>E: The method driver /usr/lib/apt/methods/https could not be found.
+N: Is the package apt-transport-https installed?
+E: Failed to fetch https://apt.syncthing.net/dists/syncthing/InRelease
+</pre>
+                    <p>If so, please install the <code>apt-transport-https</code> package and try again:</p>
+                    <pre><b>sudo apt-get install apt-transport-https</b></pre>
             </div>
         </div>
     </div>
