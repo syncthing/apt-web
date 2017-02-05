@@ -47,6 +47,17 @@
 <b>sudo apt-get update
 sudo apt-get install syncthing</b></pre>
 
+                    <p>The <code>candidate</code> channel is updated with release candidate builds, approximately once every two weeks. These predate the full release builds by about two weeks.</p>
+                    <pre># Add the release PGP keys:
+<b>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</b>
+
+# Add the "candidate" and "release" channels to your APT sources:
+<b>echo "deb https://apt.syncthing.net/ syncthing candidate release" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
+
+# Update and install syncthing:
+<b>sudo apt-get update
+sudo apt-get install syncthing</b></pre>
+
                 </div>
             </div>
             <hr/>
