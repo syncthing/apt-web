@@ -36,23 +36,23 @@
                 <div class="col-md-12">
                     <h1>Debian/Ubuntu Packages</h1>
 
-                    <p>The <code>release</code> channel is updated with full release builds, approximately once every two weeks.</p>
+                    <p>The <code>stable</code> channel is updated with stable release builds, approximately once every two weeks.</p>
                     <pre># Add the release PGP keys:
 <b>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</b>
 
-# Add the "release" channel to your APT sources:
-<b>echo "deb https://apt.syncthing.net/ syncthing release" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
+# Add the "stable" channel to your APT sources:
+<b>echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
 
 # Update and install syncthing:
 <b>sudo apt-get update
 sudo apt-get install syncthing</b></pre>
 
-                    <p>The <code>candidate</code> channel is updated with release candidate builds, approximately once every two weeks. These predate the full release builds by about two weeks.</p>
+                    <p>The <code>candidate</code> channel is updated with release candidate builds, approximately once every two weeks. These predate the stable builds by about two weeks.</p>
                     <pre># Add the release PGP keys:
 <b>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</b>
 
-# Add the "candidate" and "release" channels to your APT sources:
-<b>echo "deb https://apt.syncthing.net/ syncthing candidate release" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
+# Add the "candidate" channel to your APT sources:
+<b>echo "deb https://apt.syncthing.net/ syncthing candidate" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
 
 # Update and install syncthing:
 <b>sudo apt-get update
