@@ -38,45 +38,29 @@
                 <div class="col-md-12">
                     <h1>Debian/Ubuntu Packages</h1>
 
+                    <p>Pre requirements:</p>
+                    <pre><b>sudo apt install -y wget apt-transport-https</b>
+<b>sudo wget -O /usr/share/keyrings/syncthing-keyring.asc https://syncthing.net/release-key.txt</b></pre>
+
+
                     <p>The <code>stable</code> channel is updated with stable release builds, usually every first
                         Tuesday of the month.</p>
-                    <pre># Add the release PGP keys:
-<b>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</b>
-
-# Add the "stable" channel to your APT sources:
-<b>echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
-
-# Update and install syncthing:
-<b>sudo apt-get update
-sudo apt-get install syncthing</b></pre>
+                    <pre><b>echo "deb [signed-by=/usr/share/keyrings/syncthing-keyring.asc] https://apt.syncthing.net/ syncthing stable" |
+	sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
 
                     <p>The <code>candidate</code> channel is updated with release candidate builds, usually every
                         second Tuesday of the month. These predate the corresponding stable builds by about three
                         weeks.</p>
-                    <pre># Add the release PGP keys:
-<b>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</b>
+                    <pre><b>echo "deb [signed-by=/usr/share/keyrings/syncthing-keyring.asc] https://apt.syncthing.net/ syncthing candidate" |
+	sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
 
-# Add the "candidate" channel to your APT sources:
-<b>echo "deb https://apt.syncthing.net/ syncthing candidate" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
-
-# Update and install syncthing:
-<b>sudo apt-get update
-sudo apt-get install syncthing</b></pre>
+                    <p>Update and install syncthing:</p>
+                    <pre><b>sudo apt update
+sudo apt install syncthing</b></pre>
 
                 </div>
             </div>
-            <hr />
-            <div class="row">
-                <div class="col-md-12">
-                    <p>Depending on your distribution, you may see an error similar to the following when running <code>apt-get</code>:</p>
-                    <pre>E: The method driver /usr/lib/apt/methods/https could not be found.
-N: Is the package apt-transport-https installed?
-E: Failed to fetch https://apt.syncthing.net/dists/syncthing/InRelease
-</pre>
-                    <p>If so, please install the <code>apt-transport-https</code> package and try again:</p>
-                    <pre><b>sudo apt-get install apt-transport-https</b></pre>
-                </div>
-            </div>
+
             <hr />
             <div class="row">
                 <div class="col-md-12">
