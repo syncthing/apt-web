@@ -1,5 +1,4 @@
-http://apt.syncthing.net/
-=========================
+https://apt.syncthing.net/
+==========================
 
-Deploying this repo currently requires a manual git pull on the apt
-server.
+This repo is auto deployed by simply copying all files in it.
