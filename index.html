@@ -59,6 +59,9 @@ sudo apt-get install syncthing</b></pre>
 # Add the "candidate" channel to your APT sources:
 <b>echo "deb https://apt.syncthing.net/ syncthing candidate" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
 
+# Increase preference of Syncthing's packages ("pinning")
+<b>printf "Package: *\nPin: origin apt.syncthing.net\nPin-Priority: 990\n" | sudo tee /etc/apt/preferences.d/syncthing</b>
+
 # Update and install syncthing:
 <b>sudo apt-get update
 sudo apt-get install syncthing</b></pre>
