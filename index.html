@@ -38,31 +38,27 @@
                 <div class="col-md-12">
                     <h1>Debian/Ubuntu Packages</h1>
 
+                    <p>To allow the system to check the packages authenticity, you need to provide the release key.</p>
+                    <pre># Add the release PGP keys:
+<b>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</b></pre>
+
                     <p>The <code>stable</code> channel is updated with stable release builds, usually every first
                         Tuesday of the month.</p>
-                    <pre># Add the release PGP keys:
-<b>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</b>
-
-# Add the "stable" channel to your APT sources:
-<b>echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
-
-# Update and install syncthing:
-<b>sudo apt-get update
-sudo apt-get install syncthing</b></pre>
+                    <pre># Add the "stable" channel to your APT sources:
+<b>echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
 
                     <p>The <code>candidate</code> channel is updated with release candidate builds, usually every
                         second Tuesday of the month. These predate the corresponding stable builds by about three
                         weeks.</p>
-                    <pre># Add the release PGP keys:
-<b>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</b>
+                    <pre># Add the "candidate" channel to your APT sources:
+<b>echo "deb https://apt.syncthing.net/ syncthing candidate" | sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
 
-# Add the "candidate" channel to your APT sources:
-<b>echo "deb https://apt.syncthing.net/ syncthing candidate" | sudo tee /etc/apt/sources.list.d/syncthing.list</b>
+                    <p>To make sure the system packages do not take preference over those in this repository, you need to adjust the priority/preference.</p>
+                    <pre># Increase preference of Syncthing's packages ("pinning")
+<b>printf "Package: *\nPin: origin apt.syncthing.net\nPin-Priority: 990\n" | sudo tee /etc/apt/preferences.d/syncthing</b></pre>
 
-# Increase preference of Syncthing's packages ("pinning")
-<b>printf "Package: *\nPin: origin apt.syncthing.net\nPin-Priority: 990\n" | sudo tee /etc/apt/preferences.d/syncthing</b>
-
-# Update and install syncthing:
+                    <p>And finally.</p>
+                    <pre># Update and install syncthing:
 <b>sudo apt-get update
 sudo apt-get install syncthing</b></pre>
 
