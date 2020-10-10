@@ -61,6 +61,20 @@
                     <pre># Update and install syncthing:
 <b>sudo apt-get update
 sudo apt-get install syncthing</b></pre>
+                    <p>
+                       You might want to adjust your unattended-upgrades config to make sure it automatically updates syncthing.
+                       To do this, add <code>"o=Syncthing,site=apt.syncthing.net";</code> to the <code>Unattended-Upgrade::Origins-Pattern</code>
+                       section in your unattended upgrades config (usually <code>/etc/apt/apt.conf.d/50unattended-upgrades</code>).
+                    </p>
+                    <pre>
+// An example of the updated Origins section in /etc/apt/apt.conf.d/50unattended-upgrades:
+Unattended-Upgrade::Origins-Pattern {
+    "origin=Debian,codename=${distro_codename},label=Debian";
+    "origin=Debian,codename=${distro_codename},label=Debian-Security";
+    "origin=Debian,codename=${distro_codename}-security,label=Debian-Security";
+    <b>"o=Syncthing,site=apt.syncthing.net";</b>
+}
+                    </pre>
 
                 </div>
             </div>
