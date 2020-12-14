@@ -40,7 +40,7 @@
 
                     <p>To allow the system to check the packages authenticity, you need to provide the release key.</p>
                     <pre># Add the release PGP keys:
-<b>curl -s https://syncthing.net/release-key.txt | sudo apt-key add -</b></pre>
+<b>curl -s https://syncthing.net/release-key.txt | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/syncthing.gpg</b></pre>
 
                     <p>The <code>stable</code> channel is updated with stable release builds, usually every first
                         Tuesday of the month.</p>
