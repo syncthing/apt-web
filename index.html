@@ -53,10 +53,6 @@
                     <pre># Add the "candidate" channel to your APT sources:
 <b>echo "deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing candidate" | sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
 
-                    <p>To make sure the system packages do not take preference over those in this repository, you need to adjust the priority/preference.</p>
-                    <pre># Increase preference of Syncthing's packages ("pinning")
-<b>printf "Package: *\nPin: origin apt.syncthing.net\nPin-Priority: 990\n" | sudo tee /etc/apt/preferences.d/syncthing</b></pre>
-
                     <p>And finally.</p>
                     <pre># Update and install syncthing:
 <b>sudo apt-get update
@@ -66,6 +62,15 @@ sudo apt-get install syncthing</b></pre>
             </div>
             <hr />
             <h1>Troubleshooting</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Distribution Package Preferred Over This Version</h2>
+                    <p>To make sure the system packages do not take preference over those in this repository, you need to adjust the priority/preference.</p>
+                    <pre># Increase preference of Syncthing's packages ("pinning")
+<b>printf "Package: *\nPin: origin apt.syncthing.net\nPin-Priority: 990\n" | sudo tee /etc/apt/preferences.d/syncthing</b></pre>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-12">
                     <h2>HTTPS Method Driver Missing</h2>
