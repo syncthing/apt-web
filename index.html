@@ -67,7 +67,7 @@ sudo apt-get install syncthing</b></pre>
                     <h2>Distribution Package Preferred Over This Version</h2>
                     <p>To make sure the system packages do not take preference over those in this repository, you need to adjust the priority/preference.</p>
                     <pre># Increase preference of Syncthing's packages ("pinning")
-<b>printf "Package: *\nPin: origin apt.syncthing.net\nPin-Priority: 990\n" | sudo tee /etc/apt/preferences.d/syncthing</b></pre>
+<b>printf "Package: *\nPin: origin apt.syncthing.net\nPin-Priority: 990\n" | sudo tee /etc/apt/preferences.d/syncthing.pref</b></pre>
                 </div>
             </div>
 
