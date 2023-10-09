@@ -40,18 +40,19 @@
 
                     <p>To allow the system to check the packages authenticity, you need to provide the release key.</p>
                     <pre># Add the release PGP keys:
-<b>sudo curl -o /usr/share/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg</b></pre>
+<b>sudo sh -c "test -d /etc/apt/keyrings||mkdir -p /etc/apt/keyrings"
+sudo curl -o /etc/apt/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg</b></pre>
 
                     <p>The <code>stable</code> channel is updated with stable release builds, usually every first
                         Tuesday of the month.</p>
                     <pre># Add the "stable" channel to your APT sources:
-<b>echo "deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
+<b>echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
 
                     <p>The <code>candidate</code> channel is updated with release candidate builds, usually every
                         second Tuesday of the month. These predate the corresponding stable builds by about three
                         weeks.</p>
                     <pre># Add the "candidate" channel to your APT sources:
-<b>echo "deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing candidate" | sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
+<b>echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing candidate" | sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
 
                     <p>And finally.</p>
                     <pre># Update and install syncthing:
