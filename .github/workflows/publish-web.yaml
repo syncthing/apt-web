@@ -1,0 +1,22 @@
+name: Publish web
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    name: Publish web
+    environment: publish
+    steps:
+      - uses: actions/checkout@v4
+      - name: Push to Spaces
+        uses: docker://docker.io/rclone/rclone:latest
+        env:
+          RCLONE_CONFIG_SPACES_TYPE: s3
+          RCLONE_CONFIG_SPACES_PROVIDER: DigitalOcean
+          RCLONE_CONFIG_SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_KEY }}
+          RCLONE_CONFIG_SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET }}
+          RCLONE_CONFIG_SPACES_ENDPOINT: ams3.digitaloceanspaces.com
+          RCLONE_CONFIG_SPACES_ACL: public-read
+        with:
+          args: sync --exclude .git/** --exclude .gitignore --exclude .github/** --delete-excluded . spaces:syncthing/web
