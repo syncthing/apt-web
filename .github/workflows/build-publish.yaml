@@ -37,4 +37,4 @@ jobs:
         run: |
           ko build --bare --sbom=none -t latest .
         env:
-          KO_DOCKER_REPO: ghcr.io/syncthing/apt-web
+          KO_DOCKER_REPO: ghcr.io/syncthing/infra/apt-web
