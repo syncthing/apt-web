@@ -12,7 +12,7 @@ import (
 	"path"
 	"time"
 
-	cacheProxy "github.com/meerkat-dashboard/meerkat/proxy"
+	"calmh.dev/proxy"
 )
 
 //go:embed site
@@ -74,9 +74,6 @@ func newCachingProxy(next string, cacheTime time.Duration) (http.Handler, error)
 			r.SetURL(remote)
 		},
 	}
-	cp := &cacheProxy.Proxy{}
-	cp.Next = rev
-	rev.ModifyResponse = cp.StoreOKResponse(cacheTime)
 
-	return cp, nil
+	return proxy.New(cacheTime, 100, rev), nil
 }
