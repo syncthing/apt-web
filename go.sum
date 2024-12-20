@@ -1,5 +1,7 @@
 calmh.dev/proxy v0.0.0-20241211092212-0b1edd17f719 h1:BePk+UiIug8XJ3l7r71nnqcgWTGX1069sHiJ3ZZ75ak=
 calmh.dev/proxy v0.0.0-20241211092212-0b1edd17f719/go.mod h1:jlSCq6Yg3xwM6afXvjPtH4iWY1/b4kXpi0aOnsxxRuI=
+calmh.dev/proxy v0.0.0-20241220141533-76ceaea4b336 h1:WiMLnSrAYmsH4SITByG/8PfgTYQUlKr+nSS1UF7JrMk=
+calmh.dev/proxy v0.0.0-20241220141533-76ceaea4b336/go.mod h1:jlSCq6Yg3xwM6afXvjPtH4iWY1/b4kXpi0aOnsxxRuI=
 github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 h1:f+oWsMOmNPc8JmEHVZIycC7hBoQxHH9pNKQORJNozsQ=
 github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8/go.mod h1:wcDNUvekVysuuOpQKo3191zZyTpiI6se1N1ULghS0sw=
 golang.org/x/sync v0.10.0 h1:3NQrjDixjgGwUOCaF8w2+VYHv0Ve/vGYSbdkTa98gmQ=
