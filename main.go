@@ -13,14 +13,16 @@ import (
 	"time"
 
 	"calmh.dev/proxy"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 //go:embed site
 var siteFS embed.FS
 
 var (
-	listenAddr = cmp.Or(os.Getenv("LISTEN_ADDRESS"), ":8080")
-	distsHost  = cmp.Or(os.Getenv("DISTS_HOST"), "https://syncthing-apt.s3.fr-par.scw.cloud")
+	listenAddr        = cmp.Or(os.Getenv("LISTEN_ADDRESS"), ":8080")
+	metricsListenAddr = cmp.Or(os.Getenv("LISTEN_ADDRESS"), ":8081")
+	distsHost         = cmp.Or(os.Getenv("DISTS_HOST"), "https://syncthing-apt.s3.fr-par.scw.cloud")
 )
 
 func main() {
@@ -46,8 +48,14 @@ func main() {
 	})
 	http.Handle("/dists/", filtered)
 
+	go func() {
+		if err := http.ListenAndServe(metricsListenAddr, promhttp.Handler()); err != nil {
+			slog.Error("failed to listen", "server", "metrics", "error", err)
+		}
+	}()
+
 	if err := http.ListenAndServe(listenAddr, nil); err != nil {
-		slog.Error("failed to listen", "error", err)
+		slog.Error("failed to listen", "server", "main", "error", err)
 	}
 }
 
