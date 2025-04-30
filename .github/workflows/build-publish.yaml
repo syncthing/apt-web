@@ -35,6 +35,6 @@ jobs:
 
       - name: Build containers
         run: |
-          ko build --bare --sbom=none -t latest .
+          ko build --bare --sbom=none --platform linux/amd64,linux/arm64 -t latest .
         env:
           KO_DOCKER_REPO: ghcr.io/syncthing/infra/apt-web
