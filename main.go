@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"io/fs"
 	"log/slog"
+	"maps"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -48,7 +49,11 @@ func main() {
 
 	// The GitHub redirector serves assets from GitHub releases
 	github := &githubRedirector{
-		releasesURL:     "https://api.github.com/repos/syncthing/syncthing/releases?per_page=25",
+		releasesURLs: []string{
+			"https://api.github.com/repos/syncthing/syncthing/releases?per_page=15",
+			"https://api.github.com/repos/syncthing/discosrv/releases?per_page=5",
+			"https://api.github.com/repos/syncthing/relaysrv/releases?per_page=5",
+		},
 		refreshInterval: 5 * time.Minute,
 		next:            proxy,
 	}
@@ -107,7 +112,7 @@ func newCachingProxy(next string, cacheTime time.Duration) (http.Handler, error)
 }
 
 type githubRedirector struct {
-	releasesURL     string
+	releasesURLs    []string
 	refreshInterval time.Duration
 	next            http.Handler
 
@@ -121,12 +126,16 @@ func (r *githubRedirector) Serve(ctx context.Context) error {
 	for {
 		select {
 		case <-timer.C:
-			assets, err := r.fetchGithubReleaseAssets(ctx, r.releasesURL)
-			if err != nil {
-				return err
+			newAssets := make(map[string]string)
+			for _, url := range r.releasesURLs {
+				assets, err := r.fetchGithubReleaseAssets(ctx, url)
+				if err != nil {
+					return err
+				}
+				maps.Copy(newAssets, assets)
 			}
 			r.mut.Lock()
-			r.assets = assets
+			r.assets = newAssets
 			r.mut.Unlock()
 			timer.Reset(r.refreshInterval)
 		case <-ctx.Done():
