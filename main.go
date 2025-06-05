@@ -18,6 +18,8 @@ import (
 	"time"
 
 	"calmh.dev/proxy"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/syncthing/syncthing/lib/upgrade"
 	"github.com/thejerf/suture/v4"
@@ -30,6 +32,13 @@ var (
 	listenAddr        = cmp.Or(os.Getenv("LISTEN_ADDRESS"), ":8080")
 	metricsListenAddr = cmp.Or(os.Getenv("LISTEN_ADDRESS"), ":8081")
 	distsHost         = cmp.Or(os.Getenv("DISTS_HOST"), "https://syncthing-apt.s3.fr-par.scw.cloud")
+
+	metricFileRequests = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "aptweb_file_requests_total",
+	}, []string{"source"})
+	metricRedirectAssets = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "aptweb_redirect_assets_loaded",
+	})
 )
 
 func main() {
@@ -74,10 +83,12 @@ func main() {
 	http.Handle("/dists/", filtered)
 
 	main.Add(asService(func(_ context.Context) error {
+		slog.Info("starting metrics listener", "addr", metricsListenAddr)
 		return http.ListenAndServe(metricsListenAddr, promhttp.Handler())
 	}))
 
 	main.Add(asService(func(_ context.Context) error {
+		slog.Info("starting service listener", "addr", listenAddr)
 		return http.ListenAndServe(listenAddr, nil)
 	}))
 
@@ -121,6 +132,9 @@ type githubRedirector struct {
 }
 
 func (r *githubRedirector) Serve(ctx context.Context) error {
+	slog.Info("starting GitHub redirector")
+	defer slog.Info("stopping GitHub redirector")
+
 	timer := time.NewTimer(0)
 	defer timer.Stop()
 	for {
@@ -137,6 +151,7 @@ func (r *githubRedirector) Serve(ctx context.Context) error {
 			r.mut.Lock()
 			r.assets = newAssets
 			r.mut.Unlock()
+			metricRedirectAssets.Set(float64(len(newAssets)))
 			timer.Reset(r.refreshInterval)
 		case <-ctx.Done():
 			return ctx.Err()
@@ -160,10 +175,12 @@ func (r *githubRedirector) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	if ok {
 		http.Redirect(w, req, url, http.StatusTemporaryRedirect)
+		metricFileRequests.WithLabelValues("redirect").Inc()
 		return
 	}
 
 	r.next.ServeHTTP(w, req)
+	metricFileRequests.WithLabelValues("proxy").Inc()
 }
 
 func (r *githubRedirector) fetchGithubReleaseAssets(ctx context.Context, url string) (map[string]string, error) {
