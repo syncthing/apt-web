@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"strings"
 	"sync"
 	"time"
 
@@ -124,7 +125,6 @@ func (r *githubRedirector) Serve(ctx context.Context) error {
 			if err != nil {
 				return err
 			}
-			slog.Info("loaded GitHub assets", "count", len(assets))
 			r.mut.Lock()
 			r.assets = assets
 			r.mut.Unlock()
@@ -137,16 +137,23 @@ func (r *githubRedirector) Serve(ctx context.Context) error {
 
 func (r *githubRedirector) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	file := path.Base(req.URL.Path)
+	if unesc, err := url.PathUnescape(file); err == nil {
+		file = unesc
+	}
+
 	r.mut.Lock()
 	url, ok := r.assets[file]
+	// Special case; tildes become dots in GitHub assets...
+	if !ok {
+		url, ok = r.assets[strings.Replace(file, "~", ".", 1)]
+	}
 	r.mut.Unlock()
+
 	if ok {
-		slog.Info("serving redirect", "from", req.URL, "to", url)
 		http.Redirect(w, req, url, http.StatusTemporaryRedirect)
 		return
 	}
 
-	slog.Info("serving direct", "url", req.URL)
 	r.next.ServeHTTP(w, req)
 }
 
