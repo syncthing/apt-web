@@ -108,10 +108,10 @@ func newCachingProxy(next string, cacheTime time.Duration) (http.Handler, error)
 type githubRedirector struct {
 	releasesURL     string
 	refreshInterval time.Duration
+	next            http.Handler
 
 	mut    sync.Mutex
 	assets map[string]string
-	next   http.Handler
 }
 
 func (r *githubRedirector) Serve(ctx context.Context) error {
@@ -124,6 +124,7 @@ func (r *githubRedirector) Serve(ctx context.Context) error {
 			if err != nil {
 				return err
 			}
+			slog.Info("loaded GitHub assets", "count", len(assets))
 			r.mut.Lock()
 			r.assets = assets
 			r.mut.Unlock()
@@ -140,9 +141,12 @@ func (r *githubRedirector) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	url, ok := r.assets[file]
 	r.mut.Unlock()
 	if ok {
+		slog.Info("serving redirect", "from", req.URL, "to", url)
 		http.Redirect(w, req, url, http.StatusTemporaryRedirect)
 		return
 	}
+
+	slog.Info("serving direct", "url", req.URL)
 	r.next.ServeHTTP(w, req)
 }
 
