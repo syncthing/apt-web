@@ -161,12 +161,6 @@ func (r *githubRedirector) Serve(ctx context.Context) error {
 }
 
 func (r *githubRedirector) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	if r.buggyAPTVersion(req) {
-		slog.Info("serving proxied for buggy APT", "ua", req.Header.Get("User-Agent"))
-		r.next.ServeHTTP(w, req)
-		return
-	}
-
 	file := path.Base(req.URL.Path)
 	if unesc, err := url.PathUnescape(file); err == nil {
 		file = unesc
@@ -180,15 +174,22 @@ func (r *githubRedirector) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 	r.mut.Unlock()
 
-	if ok {
-		slog.Info("serving redirect", "file", file, "ua", req.Header.Get("User-Agent"))
-		http.Redirect(w, req, url, http.StatusTemporaryRedirect)
-		metricFileRequests.WithLabelValues("redirect").Inc()
+	if !ok {
+		r.next.ServeHTTP(w, req)
+		metricFileRequests.WithLabelValues("proxy").Inc()
 		return
 	}
 
-	r.next.ServeHTTP(w, req)
-	metricFileRequests.WithLabelValues("proxy").Inc()
+	if r.buggyAPTVersion(req) {
+		slog.Info("serving proxied for buggy APT", "file", file, "ua", req.Header.Get("User-Agent"))
+		r.next.ServeHTTP(w, req)
+		metricFileRequests.WithLabelValues("proxy-buggy-apt").Inc()
+		return
+	}
+
+	slog.Info("serving redirect", "file", file, "ua", req.Header.Get("User-Agent"))
+	http.Redirect(w, req, url, http.StatusTemporaryRedirect)
+	metricFileRequests.WithLabelValues("redirect").Inc()
 }
 
 func (r *githubRedirector) fetchGithubReleaseAssets(ctx context.Context, url string) (map[string]string, error) {
@@ -220,15 +221,16 @@ func (r *githubRedirector) fetchGithubReleaseAssets(ctx context.Context, url str
 // buggyAPTVersion returns true for APT versions that can't properly handle
 // a redirect to a signed object storage URL.
 func (r *githubRedirector) buggyAPTVersion(req *http.Request) bool {
+	// "Debian APT-CURL/1.0 (1.2.35)"
 	// "Debian APT-HTTP/1.3 (1.6.18)"
+	// "Debian APT-HTTP/1.3 (2.0.11) non-interactive"
 	// "Debian APT-HTTP/1.3 (2.2.4)"
 	// "Debian APT-HTTP/1.3 (2.4.13)"
-	// "Debian APT-HTTP/1.3 (2.7.14)"
 	fields := strings.Fields(req.Header.Get("User-Agent"))
 	if len(fields) < 3 {
 		return false
 	}
-	if fields[0] != "Debian" || !strings.HasPrefix(fields[1], "APT") {
+	if fields[0] != "Debian" || !strings.HasPrefix(fields[1], "APT-HTTP") {
 		return false
 	}
 	parts := strings.Split(strings.Trim(fields[2], "()"), ".")
