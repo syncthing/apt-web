@@ -174,6 +174,7 @@ func (r *githubRedirector) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	r.mut.Unlock()
 
 	if ok {
+		slog.Info("serving redirect", "file", file, "ua", req.Header.Get("User-Agent"))
 		http.Redirect(w, req, url, http.StatusTemporaryRedirect)
 		metricFileRequests.WithLabelValues("redirect").Inc()
 		return
