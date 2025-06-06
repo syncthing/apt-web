@@ -13,6 +13,7 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -160,6 +161,12 @@ func (r *githubRedirector) Serve(ctx context.Context) error {
 }
 
 func (r *githubRedirector) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	if r.buggyAPTVersion(req) {
+		slog.Info("serving proxied for buggy APT", "ua", req.Header.Get("User-Agent"))
+		r.next.ServeHTTP(w, req)
+		return
+	}
+
 	file := path.Base(req.URL.Path)
 	if unesc, err := url.PathUnescape(file); err == nil {
 		file = unesc
@@ -208,6 +215,45 @@ func (r *githubRedirector) fetchGithubReleaseAssets(ctx context.Context, url str
 		}
 	}
 	return assets, nil
+}
+
+// buggyAPTVersion returns true for APT versions that can't properly handle
+// a redirect to a signed object storage URL.
+func (r *githubRedirector) buggyAPTVersion(req *http.Request) bool {
+	// "Debian APT-HTTP/1.3 (1.6.18)"
+	// "Debian APT-HTTP/1.3 (2.2.4)"
+	// "Debian APT-HTTP/1.3 (2.4.13)"
+	// "Debian APT-HTTP/1.3 (2.7.14)"
+	fields := strings.Fields(req.Header.Get("User-Agent"))
+	if len(fields) < 3 {
+		return false
+	}
+	if fields[0] != "Debian" || !strings.HasPrefix(fields[1], "APT") {
+		return false
+	}
+	parts := strings.Split(strings.Trim(fields[2], "()"), ".")
+	if len(parts) < 2 {
+		return false
+	}
+
+	// Major versions lower than 2 are guaranteed buggy, higher should be
+	// fine. Precisely equals two requires further investigation.
+	if maj, err := strconv.ParseInt(parts[0], 10, 32); err != nil {
+		return false
+	} else if maj < 2 {
+		return true
+	} else if maj > 2 {
+		return false
+	}
+
+	// Minor versions lower than 2 are buggy.
+	if min, err := strconv.ParseInt(parts[1], 10, 32); err != nil {
+		return false
+	} else if min < 2 {
+		return true
+	}
+
+	return false
 }
 
 type asService func(ctx context.Context) error
