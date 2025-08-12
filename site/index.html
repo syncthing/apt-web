@@ -43,10 +43,10 @@
 <b>sudo mkdir -p /etc/apt/keyrings
 sudo curl -L -o /etc/apt/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg</b></pre>
 
-                    <p>The <code>stable</code> channel is updated with stable release builds, usually every first
+                    <p>The <code>stable-v2</code> channel is updated with stable release builds, usually every first
                         Tuesday of the month.</p>
-                    <pre># Add the "stable" channel to your APT sources:
-<b>echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
+                    <pre># Add the "stable-v2" channel to your APT sources:
+<b>echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable-v2" | sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
 
                     <p>The <code>candidate</code> channel is updated with release candidate builds, usually every
                         second Tuesday of the month. These predate the corresponding stable builds by about three
