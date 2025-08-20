@@ -67,6 +67,7 @@ func main() {
 		"Packages.gz",
 	})
 	http.Handle("/dists/", filtered)
+	http.Handle("/pool/", filtered)
 
 	main.Add(asService(func(_ context.Context) error {
 		slog.Info("starting metrics listener", "addr", metricsListenAddr)
