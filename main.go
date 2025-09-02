@@ -42,20 +42,8 @@ func main() {
 		os.Exit(2)
 	}
 
-	// The GitHub redirector serves assets from GitHub releases
-	github := &githubRedirector{
-		releasesURLs: []string{
-			"https://api.github.com/repos/syncthing/syncthing/releases?per_page=15",
-			"https://api.github.com/repos/syncthing/discosrv/releases?per_page=5",
-			"https://api.github.com/repos/syncthing/relaysrv/releases?per_page=5",
-		},
-		refreshInterval: 5 * time.Minute,
-		next:            proxy,
-	}
-	main.Add(github)
-
 	// We slightly filter which files we're willing to even try to serve
-	filtered := validateFilename(github, []string{
+	filtered := validateFilename(proxy, []string{
 		"*.deb",
 		"InRelease",
 		"InRelease.gz",
